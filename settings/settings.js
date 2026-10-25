@@ -205,7 +205,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const desktopNotificationsCheckbox = document.getElementById('desktopNotifications');
   const soundEnabledCheckbox = document.getElementById('soundEnabled');
-  const testSimulationModeCheckbox = document.getElementById('testSimulationMode');
   const testDesktopNotifBtn = document.getElementById('testDesktopNotifBtn');
   const testNotifFeedback = document.getElementById('testNotifFeedback');
 
@@ -239,7 +238,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   desktopNotificationsCheckbox.checked = settings.desktopNotifications !== false;
   soundEnabledCheckbox.checked = settings.soundEnabled !== false;
-  testSimulationModeCheckbox.checked = !!settings.testSimulationMode;
 
   pauseOnIdleCheckbox.checked = settings.pauseOnIdle !== false;
   jitterEnabledCheckbox.checked = settings.jitterEnabled !== false;
@@ -439,7 +437,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       minBudget: parseFloat(minBudgetInput.value) || 0,
       desktopNotifications: desktopNotificationsCheckbox.checked,
       soundEnabled: soundEnabledCheckbox.checked,
-      testSimulationMode: testSimulationModeCheckbox.checked,
       telegramEnabled: false,
       pauseOnIdle: pauseOnIdleCheckbox.checked,
       jitterEnabled: jitterEnabledCheckbox.checked,
@@ -451,8 +448,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Inform background worker to update timers
     await chrome.runtime.sendMessage({
       type: 'UPDATE_ALARM_INTERVAL',
-      intervalMinutes: newInterval,
-      testSimulationMode: updatedSettings.testSimulationMode
+      intervalMinutes: newInterval
     }).catch(() => {});
 
     showSaveSuccess();

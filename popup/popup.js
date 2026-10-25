@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const openAnalyticsBtn = document.getElementById('openAnalyticsBtn');
   const currentSearchLabel = document.getElementById('currentSearchLabel');
   const lastScanText = document.getElementById('lastScanText');
-  const testAlertQuickBtn = document.getElementById('testAlertQuickBtn');
   const jobList = document.getElementById('jobList');
   const emptyState = document.getElementById('emptyState');
   const jobCountBadge = document.getElementById('jobCountBadge');
@@ -72,43 +71,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (openAnalyticsBtn) {
     openAnalyticsBtn.addEventListener('click', () => {
       chrome.tabs.create({ url: chrome.runtime.getURL('dashboard/dashboard.html') });
-    });
-  }
-
-  // Quick Test Alert Button (Simulates instant job)
-  if (testAlertQuickBtn) {
-    testAlertQuickBtn.addEventListener('click', async () => {
-      testAlertQuickBtn.disabled = true;
-      testAlertQuickBtn.textContent = 'Triggering...';
-
-      playChime();
-
-      const mockJob = {
-        id: `demo_${Date.now()}`,
-        title: 'Senior Python & React Full Stack Engineer ($65/hr)',
-        url: 'https://www.upwork.com',
-        budget: '$50-$75/hr',
-        client: 'Verified Payment • 5.0★ • $80k+ spent',
-        detectedAt: Date.now(),
-        applied: false
-      };
-
-      const { jobsToday = [] } = await chrome.storage.local.get('jobsToday');
-      const updated = [mockJob, ...jobsToday];
-      await chrome.storage.local.set({
-        jobsToday: updated,
-        lastCheckInfo: { timestamp: Date.now(), status: 'Simulated Match' }
-      });
-
-      renderJobs(updated);
-
-      // Trigger desktop notification
-      await chrome.runtime.sendMessage({ type: 'TEST_NOTIFICATION' }).catch(() => {});
-
-      setTimeout(() => {
-        testAlertQuickBtn.disabled = false;
-        testAlertQuickBtn.textContent = '⚡ Test Alert';
-      }, 800);
     });
   }
 

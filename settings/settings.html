@@ -90,14 +90,13 @@
           <div class="form-group half">
             <label for="intervalMinutes">Scan Frequency</label>
             <select id="intervalMinutes" name="intervalMinutes" class="input-control">
-              <option value="0.16">⚡ Every 10 seconds (Testing & Debug Mode)</option>
               <option value="1">Every 1 minute (Fast)</option>
               <option value="2">Every 2 minutes</option>
               <option value="3" selected>Every 3 minutes (Recommended)</option>
               <option value="5">Every 5 minutes</option>
               <option value="10">Every 10 minutes</option>
             </select>
-            <small class="hint">Select <strong>"Every 10 seconds"</strong> to immediately verify alerts and monitoring.</small>
+            <small class="hint">Recommended interval: 2 to 3 minutes for timely alerts while saving computer battery.</small>
           </div>
 
           <div class="form-group half">
@@ -138,11 +137,11 @@
         </div>
       </section>
 
-      <!-- Section 2: Desktop Alerts & Testing -->
+      <!-- Section 2: Desktop Notifications & Sound Alerts -->
       <section class="card">
         <div class="card-header">
           <span class="card-icon">🔔</span>
-          <h2>Desktop Notifications & Sound</h2>
+          <h2>Desktop Notifications & Audio Alerts</h2>
         </div>
 
         <div class="mac-tip-box">
@@ -175,20 +174,9 @@
           </label>
         </div>
 
-        <div class="setting-toggle-row testing-row">
-          <div>
-            <div class="setting-title">⚡ Test Simulation Mode (Job every 10 seconds)</div>
-            <div class="setting-desc">Automatically generates a test matching job every 10 seconds so you can verify notifications, sound, badge counter, and popup list right now!</div>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="testSimulationMode">
-            <span class="slider round"></span>
-          </label>
-        </div>
-
         <div class="action-btn-row">
           <button type="button" id="testDesktopNotifBtn" class="btn btn-secondary">
-            Send Test Desktop Notification Now
+            Verify Notification Banner & Sound
           </button>
           <span id="testNotifFeedback" class="status-msg"></span>
         </div>
@@ -240,7 +228,7 @@
         <div class="setting-toggle-row">
           <div>
             <div class="setting-title">Randomized Jitter (Humanized Timing)</div>
-            <div class="setting-desc">Adds slight random timing variations so polling doesn't look robotic. (Disabled in 10s testing mode).</div>
+            <div class="setting-desc">Adds slight random timing variations so background checking appears natural.</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="jitterEnabled" checked>

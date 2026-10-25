@@ -2,7 +2,6 @@
 // Manifest V3 Compliant (Pure async/await, ephemeral state stored in chrome.storage)
 
 const ALARM_NAME = 'UPWORK_MONITOR_ALARM';
-let shortIntervalTimer = null;
 
 const DEFAULT_SETTINGS = {
   jobProfile: 'Python Developer',
@@ -12,7 +11,6 @@ const DEFAULT_SETTINGS = {
   minBudget: 0,
   soundEnabled: true,
   desktopNotifications: true,
-  testSimulationMode: false,
   telegramEnabled: false,
   telegramBotToken: '',
   telegramChatId: '',
@@ -49,36 +47,15 @@ chrome.runtime.onStartup.addListener(async () => {
   await updateBadge();
 });
 
-// Configure Timer System (Supports both standard Alarms and 10s Fast Testing Loops)
+// Configure Timer System using Chrome Alarms
 async function configureTimers(settings) {
-  // Clear any existing timer
-  if (shortIntervalTimer) {
-    clearInterval(shortIntervalTimer);
-    shortIntervalTimer = null;
-  }
   await chrome.alarms.clear(ALARM_NAME);
-
-  const interval = parseFloat(settings.intervalMinutes) || 3;
-  const isTestingMode = interval <= 0.25 || !!settings.testSimulationMode;
-
-  if (isTestingMode) {
-    console.log('[Upwork Radar] ⚡ Fast Testing Mode active: checking every 10 seconds');
-    // Run immediate check
-    runCycle(settings);
-    // Set 10-second interval
-    shortIntervalTimer = setInterval(async () => {
-      const { settings: currentSettings = DEFAULT_SETTINGS } = await chrome.storage.local.get('settings');
-      if (currentSettings.monitoringActive) {
-        await runCycle(currentSettings);
-      }
-    }, 10000);
-  } else {
-    chrome.alarms.create(ALARM_NAME, {
-      delayInMinutes: 1,
-      periodInMinutes: Math.max(1, Math.round(interval))
-    });
-    console.log(`[Upwork Radar] Standard Alarm scheduled every ${interval} min`);
-  }
+  const interval = Math.max(1, Math.round(parseFloat(settings.intervalMinutes) || 3));
+  chrome.alarms.create(ALARM_NAME, {
+    delayInMinutes: 1,
+    periodInMinutes: interval
+  });
+  console.log(`[Upwork Radar] Alarm scheduled every ${interval} min`);
 }
 
 // Alarm Trigger Handler
@@ -97,7 +74,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 // Master Execution Cycle
 async function runCycle(settings) {
   // Check user idle state
-  if (settings.pauseOnIdle && !settings.testSimulationMode) {
+  if (settings.pauseOnIdle) {
     const idleState = await new Promise((resolve) => chrome.idle.queryState(300, resolve));
     if (idleState === 'locked') {
       console.log('[Upwork Radar] System locked/idle, skipping cycle');
@@ -105,48 +82,14 @@ async function runCycle(settings) {
     }
   }
 
-  // Jitter (only in standard mode, disabled in fast testing mode)
-  if (settings.jitterEnabled && !settings.testSimulationMode && settings.intervalMinutes > 0.5) {
+  // Jitter (humanized timing)
+  if (settings.jitterEnabled && settings.intervalMinutes > 0.5) {
     const jitterSeconds = Math.floor(Math.random() * 20);
     await new Promise((r) => setTimeout(r, jitterSeconds * 1000));
   }
 
-  // 1. If Test Simulation Mode is ON, generate a mock job every cycle
-  if (settings.testSimulationMode) {
-    await simulateIncomingTestJob(settings);
-  }
-
-  // 2. Perform live check
+  // Perform live check
   await performMonitoringCheck(settings);
-}
-
-// Simulated Job Generator (For live testing and verification)
-const SAMPLE_MOCK_TITLES = [
-  'Senior Python & AI Engineer (FastAPI / LangChain)',
-  'Full Stack React & Node.js Specialist',
-  'Lead Next.js Developer for High-Growth SaaS',
-  'Python Data Pipeline & Web Scraper Architect',
-  'UI/UX Product Designer for Web3 & AI Platform',
-  'Senior Backend Go / Python Microservices Engineer'
-];
-
-async function simulateIncomingTestJob(settings) {
-  const randomTitle = SAMPLE_MOCK_TITLES[Math.floor(Math.random() * SAMPLE_MOCK_TITLES.length)];
-  const randomRate = 45 + Math.floor(Math.random() * 40);
-  const mockId = `sim_${Date.now()}`;
-
-  const mockJob = {
-    id: mockId,
-    title: `[TEST] ${randomTitle}`,
-    url: 'https://www.upwork.com/nx/search/jobs/?sort=recency',
-    budget: `$${randomRate}-$${randomRate + 25}/hr`,
-    client: 'Payment Verified (5.0★ • $60k+ spent)',
-    detectedAt: Date.now(),
-    applied: false
-  };
-
-  console.log('[Upwork Radar] Generating test simulated job:', mockJob.title);
-  await processNewJobs([mockJob], settings);
 }
 
 // --- Monitoring Engine ---
@@ -444,10 +387,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       case 'TEST_NOTIFICATION': {
         dispatchDesktopNotification({
-          id: `demo_${Date.now()}`,
-          title: 'Senior Python & React Engineer ($65/hr)',
-          budget: '$50-$75/hr',
-          client: 'Payment Verified (5.0★ • $80k+ spent)',
+          id: `verify_${Date.now()}`,
+          title: 'Job Radar Active: Desktop Alerts Working',
+          budget: 'Alert Verified',
+          client: 'System Notification Working',
           url: 'https://www.upwork.com'
         });
         sendResponse({ success: true });
@@ -456,8 +399,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       case 'UPDATE_ALARM_INTERVAL': {
         const { settings = DEFAULT_SETTINGS } = await chrome.storage.local.get('settings');
-        settings.intervalMinutes = message.intervalMinutes;
-        settings.testSimulationMode = message.testSimulationMode;
+        settings.intervalMinutes = message.intervalMinutes || 3;
         await configureTimers(settings);
         sendResponse({ success: true });
         break;

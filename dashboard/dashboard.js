@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           noDataBanner.style.display = 'block';
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        alert('⚠️ Hi there! There is no data for now to export.\n\nPlease scan jobs on Upwork or click "Load Sample Data" to test the PDF export.');
+        alert('⚠️ Hi there! There is no data for now to export.\n\nPlease scan jobs on Upwork or mark jobs as applied before generating your PDF report.');
         return;
       }
 
@@ -63,63 +63,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       setTimeout(() => {
         window.print();
       }, 50);
-    });
-  }
-
-  // Load Demo Data for 1-Click Testing
-  if (loadDemoDataBtn) {
-    loadDemoDataBtn.addEventListener('click', async () => {
-      const sampleJobs = [
-        {
-          id: `demo_${Date.now()}_1`,
-          title: 'Senior Python & React Full Stack Engineer',
-          url: 'https://www.upwork.com',
-          budget: '$55-$75/hr',
-          client: 'Payment Verified (5.0★ • $80k+ spent)',
-          action: 'Applied',
-          actionTimestamp: Date.now() - 3600000 * 2
-        },
-        {
-          id: `demo_${Date.now()}_2`,
-          title: 'Shopify Store Speed Optimization & Liquid Development',
-          url: 'https://www.upwork.com',
-          budget: '$45-$60/hr',
-          client: 'Payment Verified (4.9★ • $25k+ spent)',
-          action: 'Applied',
-          actionTimestamp: Date.now() - 3600000 * 5
-        },
-        {
-          id: `demo_${Date.now()}_3`,
-          title: 'QuickBooks Online Clean-Up & Monthly Bookkeeping',
-          url: 'https://www.upwork.com',
-          budget: 'Fixed price - Est. budget: $500',
-          client: 'Payment Verified (5.0★ • $40k+ spent)',
-          action: 'Clicked',
-          actionTimestamp: Date.now() - 3600000 * 8
-        },
-        {
-          id: `demo_${Date.now()}_4`,
-          title: 'Figma UI/UX Designer for Mobile App & Web Dashboard',
-          url: 'https://www.upwork.com',
-          budget: '$50/hr',
-          client: 'Payment Verified (4.8★ • $15k+ spent)',
-          action: 'Saved',
-          actionTimestamp: Date.now() - 3600000 * 12
-        }
-      ];
-
-      await chrome.storage.local.set({
-        applicationHistory: sampleJobs,
-        jobsToday: sampleJobs,
-        seenJobIds: sampleJobs.map((j) => j.id)
-      });
-
-      if (noDataBanner) {
-        noDataBanner.style.display = 'none';
-      }
-
-      await loadAndRenderDashboard();
-      alert('✓ Sample demo data loaded! You can now click "Export PDF Report" to test.');
     });
   }
 
