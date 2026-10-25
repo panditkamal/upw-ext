@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upwork Job Radar - Analytics & Activity History</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Top Navigation Header -->
+    <header class="dashboard-header no-print">
+      <div class="header-left">
+        <div class="logo-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>Freelancer Activity & Proposal Analytics</h1>
+          <p class="subtitle">Track monitored jobs, proposal actions, budget trends, and export PDF reports.</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="exportPdfBtn" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export PDF Report
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="settings-nav-tabs no-print">
+      <a href="../settings/settings.html" class="tab-item">⚙️ Settings</a>
+      <a href="dashboard.html" class="tab-item active">📊 Proposal Analytics & History (PDF)</a>
+    </nav>
+
+    <!-- No Data Warning Alert -->
+    <div id="noDataBanner" class="alert-banner warning no-print" style="display: none;">
+      <div class="banner-inner">
+        <div>
+          <strong>⚠️ Hi there! There is no data for now to export.</strong>
+          <p>You haven't scanned or tracked any Upwork proposals yet. Scan jobs on Upwork, or click the button to load sample data and test the PDF export right now.</p>
+        </div>
+        <button type="button" id="loadDemoDataBtn" class="btn btn-secondary btn-sm">
+          Load Sample Data
+        </button>
+      </div>
+    </div>
+
+    <!-- Printable Report Header (Visible only when exporting/printing) -->
+    <div class="print-only print-header">
+      <div class="print-brand">
+        <h2>Upwork Job Radar — Performance & Proposal Report</h2>
+        <p>Generated on <span id="reportPrintDate"></span> • Privacy-Protected Local Freelancer Analytics</p>
+      </div>
+      <hr>
+    </div>
+
+    <!-- Analytics KPI Cards -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-title">Jobs Scanned</div>
+        <div class="metric-value" id="statTotalScanned">0</div>
+        <div class="metric-subtitle">Total opportunities detected</div>
+      </div>
+
+      <div class="metric-card highlight">
+        <div class="metric-title">Proposals Applied</div>
+        <div class="metric-value" id="statAppliedCount">0</div>
+        <div class="metric-subtitle" id="statApplyRate">0% response rate</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Avg. Hourly Budget</div>
+        <div class="metric-value" id="statAvgHourly">$0/hr</div>
+        <div class="metric-subtitle">Across detected contracts</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Verified Clients</div>
+        <div class="metric-value" id="statVerifiedPercent">0%</div>
+        <div class="metric-subtitle">Payment-verified employers</div>
+      </div>
+    </section>
+
+    <!-- Visual Charts & Breakdown -->
+    <section class="charts-grid">
+      <div class="chart-card">
+        <h3>Budget & Job Type Breakdown</h3>
+        <div class="chart-bars">
+          <div class="bar-group">
+            <div class="bar-label">
+              <span>Hourly Contracts</span>
+              <span id="labelHourlyPct">0%</span>
+            </div>
+            <div class="bar-track">
+              <div id="barHourly" class="bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-group">
+            <div class="bar-label">
+              <span>Fixed-Price Contracts</span>
+              <span id="labelFixedPct">0%</span>
+            </div>
+            <div class="bar-track">
+              <div id="barFixed" class="bar-fill fixed-color" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-group">
+            <div class="bar-label">
+              <span>High-Value Contracts ($50+/hr or $1k+)</span>
+              <span id="labelHighValuePct">0%</span>
+            </div>
+            <div class="bar-track">
+              <div id="barHighValue" class="bar-fill high-color" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Freelancer Winning Tips</h3>
+        <ul class="tips-list">
+          <li><strong>Apply in under 15 minutes:</strong> Clients are 3.5x more likely to reply to the first 5 proposals submitted.</li>
+          <li><strong>Target verified clients:</strong> Clients with 5★ feedback and >$10k spent hire faster and negotiate less on price.</li>
+          <li><strong>Focus on high-budget matches:</strong> Use minimum budget filters to avoid spending connects on low-paying $5 bids.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Action History Table -->
+    <section class="table-section">
+      <div class="table-header-row no-print">
+        <div class="table-title-wrap">
+          <h2>Application & Action History</h2>
+          <span id="historyCountBadge" class="table-count-badge">0 actions</span>
+        </div>
+        <div class="table-filter-wrap">
+          <select id="filterStatus" class="select-control">
+            <option value="all">All Actions</option>
+            <option value="applied">Applied (Proposal Sent)</option>
+            <option value="clicked">Viewed / Clicked</option>
+            <option value="saved">Saved for Later</option>
+          </select>
+          <button id="clearAllHistoryBtn" class="btn btn-text-danger" title="Clear action history">
+            Clear History
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="history-table" id="historyTable">
+          <thead>
+            <tr>
+              <th style="width: 130px;">Action Date</th>
+              <th>Job Posting Title</th>
+              <th style="width: 140px;">Budget</th>
+              <th style="width: 180px;">Client Feedback</th>
+              <th style="width: 120px;">Action Status</th>
+              <th style="width: 110px;" class="no-print">Link</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Dynamically populated via dashboard.js -->
+          </tbody>
+        </table>
+
+        <div id="tableEmptyState" class="table-empty">
+          <div class="empty-icon">📋</div>
+          <p class="empty-title">No proposal actions recorded yet</p>
+          <p class="empty-desc">When you click <strong>Apply ↗</strong> or <strong>Mark Applied</strong> in the extension, the jobs will automatically be saved and tracked here.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="dashboard-footer no-print">
+      <span>Upwork Job Radar • All data is stored locally in your browser for privacy.</span>
+    </footer>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

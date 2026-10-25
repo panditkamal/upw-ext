@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Job Radar for Upwork - Real-Time Alerts",
+  "short_name": "JobRadar",
+  "version": "1.0.0",
+  "description": "Instant desktop alerts, client risk scoring, and AI proposal prompts when matching Upwork jobs are posted.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Upwork Job Radar",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "settings/settings.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.upwork.com/*"
+      ],
+      "js": [
+        "ai_analyzer.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "idle",
+    "tabs",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.upwork.com/*"
+  ]
+}

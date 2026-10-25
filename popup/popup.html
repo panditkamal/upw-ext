@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upwork Job Radar</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title">Job Radar</h1>
+        <span class="brand-subtitle">Upwork Proposal Alert</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span id="statusBadge" class="status-badge active">Active</span>
+      <button id="openAnalyticsBtn" class="icon-btn" title="Analytics & Proposal History">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+      </button>
+      <button id="openSettingsBtn" class="icon-btn" title="Settings">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="controls-card">
+    <div class="control-row">
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" id="monitoringToggle" checked>
+          <span class="slider round"></span>
+        </label>
+        <span class="toggle-label" id="toggleLabelText">Radar Active</span>
+      </div>
+      <button id="scanNowBtn" class="btn btn-secondary">
+        <svg class="spin-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        <span>Scan Now</span>
+      </button>
+    </div>
+
+    <div class="search-summary">
+      <span class="query-label">Target:</span>
+      <span id="currentSearchLabel" class="query-value" title="Active search filters">Loading skills...</span>
+    </div>
+
+    <div class="live-status-row">
+      <span id="lastScanText" class="live-status-text">Scanning automatically...</span>
+      <button type="button" id="testAlertQuickBtn" class="quick-test-btn" title="Simulate a test alert immediately">
+        ⚡ Test Alert
+      </button>
+    </div>
+  </section>
+
+  <section class="feed-section">
+    <div class="feed-header">
+      <div class="feed-title-wrap">
+        <h2>Detected Jobs</h2>
+        <span id="jobCountBadge" class="count-badge">0</span>
+      </div>
+      <button id="clearHistoryBtn" class="text-link" title="Clear list">Clear</button>
+    </div>
+
+    <div id="jobList" class="job-list">
+      <!-- Populated dynamically via popup.js -->
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <p class="empty-title">Scanning for golden matches...</p>
+      <p class="empty-subtitle">Keep an Upwork tab open or click <strong>Scan Now</strong> to check immediately.</p>
+    </div>
+  </section>
+
+  <footer class="app-footer">
+    <div class="tip-banner">
+      <span>💡 <strong>Tip:</strong> Apply within 15 min to get 3x more interview invites.</span>
+    </div>
+  </footer>
+
+  <!-- AI Proposal Intelligence Modal -->
+  <div id="aiModal" class="ai-modal" style="display: none;">
+    <div class="ai-modal-content">
+      <div class="ai-modal-header">
+        <div class="ai-modal-title-wrap">
+          <span class="ai-icon">🧠</span>
+          <h3>Client Risk & AI Bid Prompt</h3>
+        </div>
+        <button type="button" id="closeAiModalBtn" class="ai-close-btn">&times;</button>
+      </div>
+
+      <div class="ai-modal-body">
+        <!-- Client Trust Meter -->
+        <div class="trust-meter-card">
+          <div class="trust-header">
+            <span>Client Safety & Risk Score:</span>
+            <span id="modalTrustScore" class="trust-score-badge">85% Safe</span>
+          </div>
+          <div id="modalTrustFlags" class="trust-flags-container"></div>
+        </div>
+
+        <!-- Copy AI Prompt Action Box -->
+        <div class="ai-prompt-box">
+          <div class="prompt-box-header">
+            <span class="prompt-title">Winning AI Proposal Prompt:</span>
+            <button type="button" id="modalCopyPromptBtn" class="copy-btn-action">
+              📋 Copy Prompt
+            </button>
+          </div>
+          <p class="prompt-hint">Paste into <strong>ChatGPT, Claude, or Gemini</strong> to get an elite tailored proposal in 5 seconds.</p>
+          <textarea id="modalPromptText" class="prompt-textarea" readonly></textarea>
+          <div id="modalCopiedToast" class="copied-toast" style="display: none;">
+            ✓ Copied to clipboard! Ready to paste into ChatGPT / Claude.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../ai_analyzer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

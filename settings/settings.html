@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upwork Job Radar - Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="settings-container">
+    <header class="settings-header">
+      <div class="header-brand">
+        <div class="logo-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>Upwork Job Radar Settings</h1>
+          <p class="subtitle">Customize your job profile, scan frequency, and real-time alert preferences.</p>
+        </div>
+      </div>
+      <button id="saveBtnTop" class="btn btn-primary">Save Settings</button>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="settings-nav-tabs">
+      <a href="settings.html" class="tab-item active">⚙️ Settings</a>
+      <a href="../dashboard/dashboard.html" class="tab-item">📊 Proposal Analytics & History (PDF)</a>
+    </nav>
+
+    <div id="saveBanner" class="alert-banner success" style="display: none;">
+      Settings successfully saved!
+    </div>
+
+    <form id="settingsForm">
+      <!-- Section 1: Job Profile & Search Criteria -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">🎯</span>
+          <h2>Job Profile & Target Keywords</h2>
+        </div>
+
+        <div class="form-group">
+          <label>Target Skills & Job Profile</label>
+          <div class="skills-tag-box" id="skillsTagContainer">
+            <div id="selectedTagsWrapper" class="selected-tags-wrapper">
+              <!-- Selected pills injected dynamically -->
+            </div>
+            <input type="text" id="skillsSearchInput" class="skills-input-inline" placeholder="Search or type a skill (e.g. Python, React, Shopify, UI/UX)..." autocomplete="off">
+          </div>
+
+          <!-- Autocomplete Suggestions Dropdown -->
+          <div id="skillsDropdown" class="skills-dropdown" style="display: none;">
+            <!-- Populated dynamically via JS -->
+          </div>
+
+          <!-- Quick Preset Chips -->
+          <div class="quick-presets-wrap">
+            <span class="preset-label">🔥 Quick Add In-Demand Skills (IT & Non-IT):</span>
+            <div class="preset-chips" id="presetChipsContainer">
+              <button type="button" class="preset-chip" data-skill="Web Development">+ Web Development</button>
+              <button type="button" class="preset-chip" data-skill="Python">+ Python</button>
+              <button type="button" class="preset-chip" data-skill="React">+ React</button>
+              <button type="button" class="preset-chip" data-skill="Mobile App Development">+ Mobile App</button>
+              <button type="button" class="preset-chip" data-skill="AI & Prompt Engineering">+ AI & LLMs</button>
+              <button type="button" class="preset-chip" data-skill="Virtual Assistant">+ Virtual Assistant</button>
+              <button type="button" class="preset-chip" data-skill="Bookkeeping">+ Bookkeeping (QuickBooks)</button>
+              <button type="button" class="preset-chip" data-skill="Video Editing">+ Video Editing</button>
+              <button type="button" class="preset-chip" data-skill="UI/UX Design">+ UI/UX Design</button>
+              <button type="button" class="preset-chip" data-skill="SEO Optimization">+ SEO & Marketing</button>
+              <button type="button" class="preset-chip" data-skill="B2B Lead Generation">+ Lead Generation</button>
+              <button type="button" class="preset-chip" data-skill="Content Writing">+ Content Writing</button>
+              <button type="button" class="preset-chip" data-skill="Translation">+ Translation</button>
+              <button type="button" class="preset-chip" data-skill="Amazon FBA">+ Amazon & eCommerce</button>
+              <button type="button" class="preset-chip" data-skill="Customer Support">+ Customer Support</button>
+            </div>
+          </div>
+          <small class="hint">Search or click any skill badge to build your feed. Upwork search URL updates automatically.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="searchUrl">Upwork Search URL (Auto-Generated or Custom)</label>
+          <input type="text" id="searchUrl" name="searchUrl" class="input-control" placeholder="https://www.upwork.com/nx/search/jobs/?q=python%20developer&sort=recency">
+          <small class="hint">You can also paste a filtered search URL directly from Upwork (e.g. with verified client, 4.5★ rating, specific countries).</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="intervalMinutes">Scan Frequency</label>
+            <select id="intervalMinutes" name="intervalMinutes" class="input-control">
+              <option value="0.16">⚡ Every 10 seconds (Testing & Debug Mode)</option>
+              <option value="1">Every 1 minute (Fast)</option>
+              <option value="2">Every 2 minutes</option>
+              <option value="3" selected>Every 3 minutes (Recommended)</option>
+              <option value="5">Every 5 minutes</option>
+              <option value="10">Every 10 minutes</option>
+            </select>
+            <small class="hint">Select <strong>"Every 10 seconds"</strong> to immediately verify alerts and monitoring.</small>
+          </div>
+
+          <div class="form-group half">
+            <label for="minBudget">Minimum Hourly Rate ($/hr)</label>
+            <input type="number" id="minBudget" name="minBudget" class="input-control" min="0" max="500" placeholder="0 (Any budget)">
+            <small class="hint">Filter out jobs paying less than this hourly rate.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 1.5: Freelancer Proposal Identity & Profile -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">💼</span>
+          <h2>Your Freelancer Profile (For AI Winning Proposals)</h2>
+        </div>
+        <p style="font-size: 13px; color: #64748b; margin-top: -6px; margin-bottom: 14px;">
+          The AI Proposal Generator uses your profile to write customized, authentic bids tailored specifically to each job without listing irrelevant skills.
+        </p>
+
+        <div class="form-group">
+          <label for="freelancerHeadline">Your Professional Title / Headline</label>
+          <input type="text" id="freelancerHeadline" name="freelancerHeadline" class="input-control" placeholder="e.g. Senior Full Stack Engineer (Python, React & Web Architecture)">
+          <small class="hint">Leave blank to auto-align your title dynamically to each job title.</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="freelancerYearsExp">Years of Experience</label>
+            <input type="text" id="freelancerYearsExp" name="freelancerYearsExp" class="input-control" placeholder="e.g. 5+ years">
+            <small class="hint">Demonstrates credibility in the proposal.</small>
+          </div>
+          <div class="form-group half">
+            <label for="freelancerKeyStrength">Key Differentiator / Pitch</label>
+            <input type="text" id="freelancerKeyStrength" name="freelancerKeyStrength" class="input-control" placeholder="e.g. Fast turnaround, clean code & proactive communication">
+            <small class="hint">Your unique competitive advantage.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Desktop Alerts & Testing -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">🔔</span>
+          <h2>Desktop Notifications & Sound</h2>
+        </div>
+
+        <div class="mac-tip-box">
+          <div class="tip-icon">ℹ️</div>
+          <div>
+            <strong>Mac Users Notice:</strong> If desktop notifications do not appear on your screen:
+            <br>Open <strong>Apple Menu ➔ System Settings ➔ Notifications ➔ Google Chrome</strong> and verify that <strong>"Allow Notifications"</strong> and <strong>"Banners"</strong> are turned ON.
+          </div>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div>
+            <div class="setting-title">Enable Desktop Notifications</div>
+            <div class="setting-desc">Pop up a real-time banner alert on your screen when a matching job appears.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="desktopNotifications" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div>
+            <div class="setting-title">Notification Audio Chime</div>
+            <div class="setting-desc">Play an audible chime whenever a new matching job arrives.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="soundEnabled" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row testing-row">
+          <div>
+            <div class="setting-title">⚡ Test Simulation Mode (Job every 10 seconds)</div>
+            <div class="setting-desc">Automatically generates a test matching job every 10 seconds so you can verify notifications, sound, badge counter, and popup list right now!</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="testSimulationMode">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="action-btn-row">
+          <button type="button" id="testDesktopNotifBtn" class="btn btn-secondary">
+            Send Test Desktop Notification Now
+          </button>
+          <span id="testNotifFeedback" class="status-msg"></span>
+        </div>
+      </section>
+
+      <!-- Section 3: Telegram Mobile Alerts (Phase 2 Coming Soon) -->
+      <section class="card coming-soon-card">
+        <div class="card-header">
+          <span class="card-icon">📱</span>
+          <h2>Telegram Mobile Alerts</h2>
+          <span class="badge-coming-soon">COMING SOON IN PHASE 2</span>
+        </div>
+
+        <p class="coming-soon-desc">
+          Direct Telegram Bot push notifications to your mobile phone are currently scheduled for Phase 2.
+          <br>For now, real-time <strong>Desktop Popups</strong> and <strong>In-Browser Radar Alerts</strong> are active and running.
+        </p>
+
+        <div class="setting-toggle-row disabled-row">
+          <div>
+            <div class="setting-title">Telegram Push Alerts (Disabled)</div>
+            <div class="setting-desc">Will allow receiving job notifications on your phone via Telegram.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="telegramEnabled" disabled>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Section 4: Safety & Anti-Detection -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">🛡️</span>
+          <h2>Safety & Protection</h2>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div>
+            <div class="setting-title">Pause Monitoring When Idle</div>
+            <div class="setting-desc">Pauses checks when your computer is locked or you are away from keyboard.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pauseOnIdle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div>
+            <div class="setting-title">Randomized Jitter (Humanized Timing)</div>
+            <div class="setting-desc">Adds slight random timing variations so polling doesn't look robotic. (Disabled in 10s testing mode).</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="jitterEnabled" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </section>
+
+      <footer class="settings-footer">
+        <button type="submit" class="btn btn-primary btn-large">Save All Settings</button>
+      </footer>
+    </form>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>
