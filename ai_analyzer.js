@@ -89,6 +89,7 @@ function getRelevantSkillsForJob(jobData, allUserSkills) {
 
   // Detect primary job domain
   const isDev = /engineer|developer|programming|stack|frontend|backend|software|web|react|python|node|api|database|bug|fix|support|wordpress|shopify|php|javascript|mobile/i.test(combinedContext);
+  const isAnimation = /animat|motion graphics|after effects|blender|c4d|maya|character|rigging|vfx|lottie|whiteboard|kinetic/i.test(combinedContext);
   const isDesign = /design|ui|ux|figma|logo|graphic|illustrator|photoshop|branding|creative|wireframe/i.test(combinedContext);
   const isWriting = /writing|content|article|blog|copywriting|seo content|proofread|editor/i.test(combinedContext);
   const isMarketing = /marketing|seo|lead generation|ads|google ads|social media|b2b|growth|sem/i.test(combinedContext);
@@ -116,6 +117,7 @@ function getRelevantSkillsForJob(jobData, allUserSkills) {
     }
 
     // Domain affinity bonus
+    if (isAnimation && /animat|motion|after effects|blender|c4d|maya|rigging|vfx|lottie|character|video/i.test(sLower)) score += 8;
     if (isDev && /react|python|web|stack|node|javascript|typescript|django|laravel|php|api|mobile|software|html|css|vue|next/i.test(sLower)) score += 5;
     if (isDesign && /design|ui|ux|figma|graphic|wireframe|brand|creative|canva|illustrator|photoshop/i.test(sLower)) score += 5;
     if (isWriting && /writing|content|copy|blog|article|proofread/i.test(sLower)) score += 5;
@@ -184,7 +186,9 @@ function generateWinningProposalPrompt(jobData, userProfileOrSkills) {
   // 2. Synthesize professional headline if none provided
   if (!headline) {
     const t = (jobData.title || '').toLowerCase();
-    if (/design|ui|ux|figma|graphic/i.test(t)) {
+    if (/animat|motion|after effects|blender|3d/i.test(t)) {
+      headline = 'Senior 2D/3D Animator & Motion Graphics Artist';
+    } else if (/design|ui|ux|figma|graphic/i.test(t)) {
       headline = 'Senior UI/UX & Product Designer';
     } else if (/full stack/i.test(t)) {
       headline = 'Senior Full Stack Software Engineer';
