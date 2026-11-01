@@ -1,6 +1,6 @@
 # Chrome Web Store Listing — Job Radar for Upwork
 
-> Last Updated: 2026-10-25
+> Last Updated: 2026-11-01
 
 ## Store Listing
 
@@ -8,42 +8,52 @@
 Job Radar for Upwork - Real-Time Alerts
 
 **Short Description** [REQUIRED]
-Instant desktop alerts, client risk scoring, and AI proposal prompts when matching Upwork jobs are posted. Apply in 15 minutes.
+Instant desktop alerts, client risk scoring, webhook notifications, and AI proposal generation when matching Upwork jobs are posted.
 
 **Detailed Description** [REQUIRED]
 Be the first to apply to high-value Upwork jobs before dozens of proposals flood the listing.
 
-Job Radar for Upwork monitors your targeted freelance skills and delivers instant desktop notifications the moment matching jobs are posted. With on-page client risk analysis and tailored proposal generation prompts, you can submit standout proposals in minutes.
+Job Radar for Upwork monitors your targeted freelance skills and delivers instant notifications the moment matching jobs are posted. With on-page client risk analysis, Connects budget tracking, and tailored AI proposal generation, you can submit standout proposals in minutes and win more contracts.
 
 KEY FEATURES
-• Real-Time Job Radar: Get notified via desktop alerts and audio chimes within minutes of new job postings.
-• 160+ Skill Tag Selector: Target specific professional specializations across technical, creative, and administrative categories.
-• Live Active-Filter Sync: Automatically recognizes your open Upwork search tabs and filters without re-typing.
-• Client Trust & Scam Shield: Evaluates client payment verification, hire rate, spending history, and flags high-risk or suspended accounts to protect your connects.
-• 1-Click AI Proposal Prompts: Generates tailored, high-converting proposal prompts based on the job's exact deliverables, ready to paste into your AI writing assistant.
-• Proposal Activity & Analytics: Track which jobs you viewed, saved, and applied to, and export your history to a clean PDF report.
+• Real-Time Job Radar: Get notified via desktop alerts and customizable audio chimes within minutes of new job postings.
+• Multi-Skill Profile Engine: Target your exact freelance specializations with quick-add skill badges, custom keywords, or direct Upwork search URLs.
+• In-App AI Proposal Generator: Connect your own API key (OpenAI, Claude, or OpenAI-compatible models like OpenRouter, Groq, and Gemini) to generate personalized proposals aligned with your professional title and experience.
+• 1-Click AI Bid Prompts: Instantly copy comprehensive, deliverable-focused proposal prompts ready to paste into any AI writing tool.
+• Client Trust & Scam Shield: Evaluates client payment verification, hire rate, spending history, and flags high-risk accounts or low-hire buyers to protect your Connects.
+• Discord & Slack Webhooks: Automatically route new-job alerts to your private Discord channel or Slack workspace for seamless mobile notifications.
+• Connects Budget Tracker: Monitor your monthly Connects expenditures against your target budget so you never overspend on bids.
+• Smart Filters & Quiet Hours: Filter out unwanted keywords or specific countries, set minimum hourly and fixed budget floors, define minimum fit scores, and schedule quiet hours to avoid night-time interruptions.
+• Proposal Snippets & History: Save reusable proposal templates (intros, pricing, portfolio links), track applied and saved jobs, and export your history as a clean report.
+
+WHAT'S NEW IN VERSION 1.0.1
+• Direct AI proposal generator supporting OpenAI, Anthropic Claude, and OpenRouter endpoints.
+• Discord and Slack webhook alert integration.
+• Monthly Connects tracker with real-time budget remaining indicators.
+• Advanced negative keyword exclusions and client country filters.
+• Configurable Quiet Hours and daily alert caps.
+• Full-stack profile alignment with refreshed, responsive UI controls.
 
 HOW TO USE
-1. Click the Job Radar icon in your Chrome toolbar or open Options to select your targeted skills.
-2. Keep an Upwork search tab open in your browser while you work.
-3. When a new job matches your skills, a desktop alert and audio chime notify you immediately.
-4. Click "AI Bid Prompt" to review client safety scores and copy an expert proposal prompt.
+1. Click the Job Radar icon in your toolbar or open Options to configure your targeted skills and profile.
+2. (Optional) Add your AI API key for instant proposal generation, or enter a Discord/Slack webhook URL for team alerts.
+3. Keep an Upwork search tab open or let Job Radar monitor your feed in the background.
+4. When a matching job appears, review its client safety metrics and click "AI Bid Prompt" to draft your tailored proposal.
 5. Apply early to maximize your interview conversion rate.
 
 PRIVACY & SECURITY
-Your privacy is our priority. Job Radar for Upwork does not collect, sell, or transmit any personal data. All preferences, search filters, and application history are stored locally on your device in your browser's private storage.
+Your privacy is our priority. Job Radar for Upwork does not sell, track, or transmit your personal data. All preferences, filter criteria, and application histories are stored locally on your device in your browser's private extension storage. Your optional AI keys are kept strictly local and communicate directly with your selected AI provider.
 
 PERMISSIONS
 • "Read and change your data on upwork.com" — Used solely to scan public job postings matching your selected filters and display client safety metrics on job pages.
 • "Display notifications" — Delivers desktop alerts when new matching jobs are discovered.
 • "Storage" — Saves your skill selections and local application history on your device.
+• "Alarms" — Schedules periodic background checks at your chosen frequency.
 
 SUPPORT
 Have questions or suggestions? We are here to help.
 Email: support@freelanceradar.app
 Website: https://github.com/panditkamal/upw-ext
-
-Version 1.0.0 — Initial Release with real-time alerts, 160+ skills engine, client trust scoring, and 1-click AI proposal prompt generation.
 
 **Category** [REQUIRED]
 Productivity
@@ -119,4 +129,5 @@ English
 
 | Version | Date | Changes | Status |
 |---|---|---|---|
-| 1.0.0 | 2026-10-25 | Initial release with real-time alerts, 160+ skills selector, client risk meter, on-page intelligence card, and proposal export dashboard. | Ready for Upload |
+| 1.0.0 | 2026-10-25 | Initial release with real-time alerts, 160+ skills selector, client risk meter, on-page intelligence card, and proposal export dashboard. | Published |
+| 1.0.1 | 2026-11-01 | Bring-your-own-key AI proposal generator, Discord/Slack webhooks, Connects tracker, keyword/country exclusions, Quiet Hours, and UI refinements. | Ready for Upload |
