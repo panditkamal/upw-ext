@@ -92,6 +92,8 @@ English
 | `tabs` | permissions | Used to detect if an Upwork tab is already open so the extension can reuse existing sessions and avoid opening duplicate tabs. |
 | `scripting` | permissions | Used to scan the active Upwork tab's job list when the user clicks "Scan Now". |
 | `activeTab` | permissions | Allows reading the current tab's active filters when the user opens the popup. |
+| `contextMenus` | permissions | Used to provide quick shortcut actions on the extension's toolbar icon (e.g. 'Scan Upwork now' and 'Open latest matching job'). |
+| `offscreen` | permissions | Required by Manifest V3 to play notification audio chimes via an offscreen document when new jobs are detected, as service workers lack audio playback APIs. |
 
 ---
 
