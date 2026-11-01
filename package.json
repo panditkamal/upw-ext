@@ -3,6 +3,7 @@
   "private": true,
   "description": "Job Radar for Upwork Chrome Extension",
   "scripts": {
-    "test": "node filters.test.js"
+    "test": "node filters.test.js",
+    "build": "node -c background.js content.js popup/popup.js settings/settings.js dashboard/dashboard.js ai_analyzer.js filters.js && node filters.test.js && zip -r -q job-radar-for-upwork-v1.0.0.zip manifest.json background.js content.js ai_analyzer.js filters.js icons/ popup/ settings/ dashboard/ -x '*.DS_Store*' && echo '✓ Build complete! Extension ready to load at chrome://extensions/'"
   }
 }
