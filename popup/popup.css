@@ -48,7 +48,7 @@ body {
 .icon-btn:hover { color: var(--text); border-color: var(--line-2); background: var(--surface); }
 
 /* Controls --------------------------------------------------------- */
-.controls-card { padding: 0 18px 14px; border-bottom: 1px solid var(--line); }
+.controls-card { padding: 0 18px 14px; }
 .control-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0 12px; }
 .toggle-container { display: flex; align-items: center; gap: 10px; }
 .toggle-label { font-weight: 500; color: var(--text); }
@@ -67,7 +67,7 @@ body {
 .text-link:hover { filter: brightness(1.15); }
 
 /* Feed ------------------------------------------------------------- */
-.feed-section { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.feed-section { background: var(--surface); border-top: 1px solid var(--line); flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .feed-header { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 18px 8px; }
 .feed-title-wrap { display: flex; align-items: baseline; gap: 10px; }
 .feed-title-wrap h2 { font-size: 20px; }
@@ -106,7 +106,7 @@ body {
   display: grid; place-items: center;
   background: conic-gradient(var(--c) calc(var(--p) * 1%), var(--line-2) 0);
 }
-.fit::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--bg); }
+.fit::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--surface); }
 .fit b { position: relative; z-index: 1; font: 600 12px var(--mono); letter-spacing: -0.04em; color: var(--text); }
 .fit-hi { --c: var(--accent); }
 .fit-mid { --c: var(--warn); }
@@ -154,24 +154,24 @@ body {
 /* AI modal --------------------------------------------------------- */
 .ai-modal {
   position: fixed; inset: 0; z-index: 50; display: none; align-items: flex-end;
-  background: oklch(10% 0.01 165 / 0.7); backdrop-filter: blur(6px);
+  background: oklch(30% 0.02 160 / 0.35); backdrop-filter: blur(4px);
   animation: fade 0.25s var(--ease);
 }
 @keyframes fade { from { opacity: 0; } }
 .ai-modal-content {
-  width: 100%; max-height: 92vh; overflow-y: auto; background: var(--bg);
+  width: 100%; max-height: 92vh; overflow-y: auto; background: var(--surface); box-shadow: 0 -10px 40px rgb(30 40 35 / 0.12);
   border-top: 1px solid var(--line-2);
   animation: sheet 0.5s var(--ease);
 }
 @keyframes sheet { from { transform: translateY(40px); opacity: 0; } }
-.ai-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); }
+.ai-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); }
 .ai-modal-title-wrap h3 { font-size: 18px; }
 .ai-close-btn { width: 30px; height: 30px; font-size: 20px; line-height: 1; background: none; border: 1px solid transparent; border-radius: var(--r); color: var(--text-2); cursor: pointer; }
 .ai-close-btn:hover { border-color: var(--line-2); color: var(--text); }
 .ai-modal-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 18px; }
 
 .trust-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 10.5px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
-.trust-score-badge { font: 600 11px var(--mono); letter-spacing: 0.02em; text-transform: none; color: #0b0f0c; padding: 4px 10px; border-radius: 999px; }
+.trust-score-badge { font: 600 11px var(--mono); letter-spacing: 0.02em; text-transform: none; color: #fff; padding: 4px 10px; border-radius: 999px; }
 .trust-flags-container { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .trust-flag-item { font-size: 12px; padding: 8px 10px; border-left: 2px solid; background: var(--surface); line-height: 1.4; }
 .trust-flag-item.red { border-color: var(--danger); color: var(--text); }

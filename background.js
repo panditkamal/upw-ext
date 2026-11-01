@@ -299,7 +299,7 @@ async function processNewJobs(incomingJobs, settings, search = getSearches(setti
   const existingIdSet = new Set(jobsToday.map((j) => j.id));
 
   for (const job of incomingJobs) {
-    if (!job.id) continue;
+    if (!job.id || !isJobUrl(job.url)) continue;
 
     if (!passesBudget(job, search) || isExcluded(job, settings)) continue;
     job.search = search.name;

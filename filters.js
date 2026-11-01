@@ -19,6 +19,13 @@ function passesBudget(job, { minHourly = 0, minFixed = 0 } = {}) {
 const splitList = (v) => (Array.isArray(v) ? v : String(v || '').split(','))
   .map((s) => s.trim().toLowerCase()).filter(Boolean);
 
+// Only real job postings: profile, agency and freelancer links also carry ~ids and must never be treated as jobs.
+function isJobUrl(url) {
+  const u = url || '';
+  return /\/(?:jobs\/|nx\/search\/jobs\/details\/|nx\/find-work\/[^?]*\/details\/)/.test(u) &&
+    !/\/(?:freelancers|ab\/profiles|agencies|fl|o)\//.test(u);
+}
+
 // Upwork hides client names, so the best stable identity is spent + rating + country.
 // Returns '' when the job lacks a specific "$X spent" figure (too vague to block on).
 function clientFingerprint(job) {
@@ -137,5 +144,5 @@ function classifyBuyer({ hireRate, jobsPosted, hires, spent } = {}) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { parseClientStats, classifyBuyer, clientFingerprint, webhookBody, parseBudget, passesBudget, isExcluded, inQuietHours, parseJobMeta, scoreJob, connectsSpentThisMonth };
+  module.exports = { isJobUrl, parseClientStats, classifyBuyer, clientFingerprint, webhookBody, parseBudget, passesBudget, isExcluded, inQuietHours, parseJobMeta, scoreJob, connectsSpentThisMonth };
 }

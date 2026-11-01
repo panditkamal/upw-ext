@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         });
 
-        const updatedList = jobsToday.slice(0, 100);
+        const updatedList = jobsToday.filter((j) => isJobUrl(j.url)).slice(0, 100); // also purges stray profile entries
         await chrome.storage.local.set({
           jobsToday: updatedList,
           lastCheckInfo: {
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       lastScanText.textContent = 'Ready to scan';
     }
 
-    renderJobs(jobsToday, settings);
+    renderJobs(jobsToday.filter((j) => isJobUrl(j.url)), settings);
   }
 
   function updateMonitoringUI(isActive) {
@@ -602,13 +602,16 @@ function extractJobsAndFiltersFromDOM() {
   const seenIds = new Set();
 
   // Find all links matching Upwork job postings
-  const anchors = Array.from(document.querySelectorAll('a[href*="/jobs/"], a[href*="/details/"], a[href*="~"]'));
+  const anchors = Array.from(document.querySelectorAll('a[href*="/jobs/"], a[href*="/details/"]'));
 
   anchors.forEach((a) => {
     try {
       const href = a.getAttribute('href') || '';
       const idMatch = href.match(/~[a-zA-Z0-9]+/);
       if (!idMatch) return;
+      // Only job postings: skip freelancer/agency profile links that also carry ~ids
+      if (!/\/(?:jobs\/|nx\/search\/jobs\/details\/|nx\/find-work\/[^?]*\/details\/)/.test(href) ||
+          /\/(?:freelancers|ab\/profiles|agencies|fl|o)\//.test(href)) return;
 
       const id = idMatch[0];
       if (seenIds.has(id)) return;

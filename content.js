@@ -71,7 +71,7 @@ function extractJobsFromDocument(doc) {
     try {
       const href = anchor.getAttribute('href') || '';
       const idMatch = href.match(/~[a-zA-Z0-9]+/);
-      if (!idMatch) return;
+      if (!idMatch || !isJobUrl(href)) return;
 
       const id = idMatch[0];
       if (seenIds.has(id)) return;

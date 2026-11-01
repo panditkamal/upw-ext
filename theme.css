@@ -1,26 +1,26 @@
 /* theme.css - shared design tokens and base components.
-   Concept: a signal monitor. Ink-dark surfaces, warm paper type, one phosphor-green accent.
+   Concept: a signal monitor. Warm paper surfaces, ink type, one green accent.
    Fonts are system stacks (serif display + sans body + mono data) so nothing loads remotely. */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --bg:        oklch(15% 0.012 165);
-  --surface:   oklch(19% 0.014 165);
-  --surface-2: oklch(23.5% 0.016 165);
-  --line:      rgb(255 255 255 / 0.08);
-  --line-2:    rgb(255 255 255 / 0.16);
+  --bg:        oklch(97.5% 0.008 95);
+  --surface:   oklch(99.6% 0.003 95);
+  --surface-2: oklch(95% 0.01 95);
+  --line:      rgb(30 40 35 / 0.09);
+  --line-2:    rgb(30 40 35 / 0.18);
 
-  --text:      oklch(94% 0.012 95);
-  --text-2:    oklch(76% 0.012 120);
-  --text-3:    oklch(58% 0.012 150);
-  --text-4:    oklch(44% 0.012 150);
+  --text:      oklch(22% 0.02 160);
+  --text-2:    oklch(38% 0.02 160);
+  --text-3:    oklch(52% 0.018 160);
+  --text-4:    oklch(68% 0.014 160);
 
-  --accent:     oklch(84% 0.21 145);
-  --accent-dim: oklch(84% 0.21 145 / 0.14);
-  --accent-ink: oklch(18% 0.05 150);
-  --warn:       oklch(82% 0.15 85);
-  --danger:     oklch(70% 0.19 25);
+  --accent:     oklch(55% 0.16 150);
+  --accent-dim: oklch(55% 0.16 150 / 0.12);
+  --accent-ink: oklch(99% 0.004 95);
+  --warn:       oklch(66% 0.15 75);
+  --danger:     oklch(56% 0.2 25);
 
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, ui-serif, serif;
   --sans:  ui-sans-serif, -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
@@ -32,27 +32,7 @@
   --t-small:   250ms;
   --t-medium:  400ms;
 
-  --r: 4px;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme: light;
-    --bg:        oklch(96.5% 0.012 95);
-    --surface:   oklch(99% 0.006 95);
-    --surface-2: oklch(94% 0.012 95);
-    --line:      rgb(20 30 25 / 0.1);
-    --line-2:    rgb(20 30 25 / 0.2);
-    --text:      oklch(21% 0.02 160);
-    --text-2:    oklch(38% 0.02 160);
-    --text-3:    oklch(52% 0.02 160);
-    --text-4:    oklch(68% 0.015 160);
-    --accent:     oklch(52% 0.17 148);
-    --accent-dim: oklch(52% 0.17 148 / 0.12);
-    --accent-ink: oklch(99% 0.006 95);
-    --warn:       oklch(62% 0.15 75);
-    --danger:     oklch(55% 0.2 25);
-  }
+  --r: 6px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

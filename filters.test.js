@@ -1,6 +1,6 @@
 // Run: node filters.test.js
 const assert = require('assert');
-const { parseClientStats, classifyBuyer, clientFingerprint, webhookBody, parseBudget, passesBudget, isExcluded, inQuietHours, parseJobMeta, scoreJob, connectsSpentThisMonth } = require('./filters');
+const { isJobUrl, parseClientStats, classifyBuyer, clientFingerprint, webhookBody, parseBudget, passesBudget, isExcluded, inQuietHours, parseJobMeta, scoreJob, connectsSpentThisMonth } = require('./filters');
 
 assert.deepStrictEqual(parseBudget('Hourly: $20-$40'), { type: 'hourly', max: 40 });
 assert.deepStrictEqual(parseBudget('Fixed-price: $1,500'), { type: 'fixed', max: 1500 });
@@ -61,5 +61,13 @@ assert.strictEqual(classifyBuyer({ hireRate: 0, jobsPosted: 6, spent: 0 }).level
 assert.strictEqual(classifyBuyer({ jobsPosted: 5, spent: 0 }).level, 'ghost');
 assert.strictEqual(classifyBuyer({ hireRate: 0, jobsPosted: 1, spent: 0 }), null); // brand new client is not a ghost
 assert.strictEqual(classifyBuyer({}), null);
+
+assert.ok(isJobUrl('https://www.upwork.com/jobs/Python-dev_~0123abc/'));
+assert.ok(isJobUrl('/nx/search/jobs/details/~0123abc?x=1'));
+assert.ok(isJobUrl('/nx/find-work/best-matches/details/~0123abc'));
+assert.ok(!isJobUrl('https://www.upwork.com/freelancers/~01profile'));
+assert.ok(!isJobUrl('/ab/profiles/~01profile'));
+assert.ok(!isJobUrl('/agencies/~01agency/'));
+assert.ok(!isJobUrl(''));
 
 console.log('filters ok');
