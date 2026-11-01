@@ -50,8 +50,8 @@ body { padding: 56px 24px 96px; }
 .table-title-wrap { display: flex; align-items: baseline; gap: 14px; }
 .table-title-wrap h2 { font-size: 28px; }
 .table-count-badge { font: 11px var(--mono); color: var(--accent); }
-.table-filter-wrap { display: flex; gap: 10px; align-items: center; }
-.select-control { width: auto; }
+.table-filter-wrap { display: flex; gap: 12px; align-items: center; }
+.select-control { width: auto; min-width: 140px; }
 
 .table-container { overflow-x: auto; }
 .history-table { width: 100%; border-collapse: collapse; }

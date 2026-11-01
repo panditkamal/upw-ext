@@ -89,11 +89,48 @@ a { color: inherit; }
 .input-control, .select-control, select, textarea, input[type="text"], input[type="number"], input[type="time"], input[type="password"] {
   font: 13px var(--sans); color: var(--text);
   background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r);
-  padding: 10px 12px; width: 100%;
+  padding: 10px 14px; width: 100%;
   transition: border-color var(--t-micro) var(--ease), background var(--t-micro) var(--ease);
 }
 .input-control:hover, select:hover, textarea:hover { border-color: var(--text-4); }
 .input-control:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+
+/* Dropdown select controls with custom down arrow and balanced internal padding */
+select, .select-control, select.input-control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 10px 38px 10px 14px;
+  background-color: var(--surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%2338423b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 13px 13px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+select:disabled, .select-control:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Internal padding & margin for native indicator arrows */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  margin-right: 4px;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity var(--t-micro) var(--ease);
+}
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin-right: 4px;
+  cursor: pointer;
+}
 input::placeholder, textarea::placeholder { color: var(--text-4); }
 input[type="color"] { width: 44px; height: 32px; padding: 2px; background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r); cursor: pointer; }
 input[type="range"] { accent-color: var(--accent); }
