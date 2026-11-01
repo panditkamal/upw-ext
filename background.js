@@ -5,10 +5,22 @@ importScripts('filters.js', 'ai_client.js', 'ai_analyzer.js');
 
 const ALARM_NAME = 'UPWORK_MONITOR_ALARM';
 
+const DEFAULT_SKILLS = [
+  'Full Stack Development',
+  'React',
+  'Node.js',
+  'Python',
+  'Web Development'
+];
+
 const DEFAULT_SETTINGS = {
-  jobProfile: 'Python Developer',
-  searchQuery: 'python developer',
-  searchUrl: 'https://www.upwork.com/nx/search/jobs/?q=python%20developer&sort=recency',
+  selectedSkills: DEFAULT_SKILLS,
+  jobProfile: DEFAULT_SKILLS.join(', '),
+  searchQuery: 'full stack react python node web development',
+  searchUrl: 'https://www.upwork.com/nx/search/jobs/?q=full%20stack%20react%20python&sort=recency',
+  freelancerHeadline: 'Senior Full Stack Engineer (Python, React & Web Architecture)',
+  freelancerYearsExp: '5+ years',
+  freelancerKeyStrength: 'Fast turnaround, clean architecture & proactive communication',
   intervalMinutes: 3,
   minBudget: 0,
   minHourly: 0,
@@ -53,9 +65,31 @@ chrome.runtime.onInstalled.addListener(async (details) => {
       unviewedCount: 0,
       lastCheckInfo: { timestamp: Date.now(), status: 'Initialized' }
     });
+  } else {
+    // Migration: automatically upgrade users from legacy single 'Python Developer' default
+    const s = existing.settings;
+    const isLegacyPythonDefault =
+      (!s.selectedSkills || s.selectedSkills.length === 0 || (s.selectedSkills.length === 1 && (s.selectedSkills[0] === 'Python Developer' || s.selectedSkills[0] === 'Python'))) &&
+      (!s.jobProfile || s.jobProfile === 'Python Developer' || s.jobProfile === 'Python');
+
+    if (isLegacyPythonDefault) {
+      const updated = {
+        ...s,
+        selectedSkills: DEFAULT_SETTINGS.selectedSkills,
+        jobProfile: DEFAULT_SETTINGS.jobProfile,
+        searchQuery: DEFAULT_SETTINGS.searchQuery,
+        searchUrl: (!s.searchUrl || s.searchUrl.includes('python%20developer') || s.searchUrl === 'https://www.upwork.com/nx/search/jobs/?q=python%20developer&sort=recency')
+          ? DEFAULT_SETTINGS.searchUrl
+          : s.searchUrl,
+        freelancerHeadline: s.freelancerHeadline || DEFAULT_SETTINGS.freelancerHeadline,
+        freelancerYearsExp: s.freelancerYearsExp || DEFAULT_SETTINGS.freelancerYearsExp,
+        freelancerKeyStrength: s.freelancerKeyStrength || DEFAULT_SETTINGS.freelancerKeyStrength
+      };
+      await chrome.storage.local.set({ settings: updated });
+    }
   }
 
-  const settings = existing.settings || DEFAULT_SETTINGS;
+  const settings = (await chrome.storage.local.get('settings')).settings || DEFAULT_SETTINGS;
   await configureTimers(settings);
   await updateBadge();
 });
@@ -177,7 +211,7 @@ async function saveCheckLog(status) {
 async function fetchSearchFeedDirect(settings, search) {
   let targetUrl = search.url;
   if (!targetUrl || !targetUrl.includes('upwork.com')) {
-    const q = encodeURIComponent(settings.jobProfile || settings.searchQuery || 'developer');
+    const q = encodeURIComponent(settings.jobProfile || settings.searchQuery || 'full stack developer');
     targetUrl = `https://www.upwork.com/nx/search/jobs/?q=${q}&sort=recency`;
   }
 

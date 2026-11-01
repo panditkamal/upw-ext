@@ -34,7 +34,7 @@ async function handlePageCheck(settings) {
   // 2. Fallback: Query search URL using active session
   let targetUrl = settings?.searchUrl;
   if (!targetUrl || !targetUrl.includes('upwork.com')) {
-    const q = encodeURIComponent(settings?.jobProfile || settings?.searchQuery || 'web development');
+    const q = encodeURIComponent(settings?.jobProfile || settings?.searchQuery || 'full stack react python');
     targetUrl = `https://www.upwork.com/nx/search/jobs/?q=${q}&sort=recency`;
   }
 

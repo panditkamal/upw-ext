@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else if (settings.jobProfile && !settings.jobProfile.includes('chrome://')) {
       currentSearchLabel.textContent = `${settings.jobProfile}`;
     } else {
-      currentSearchLabel.textContent = 'Web Development • Graphic Design';
+      currentSearchLabel.textContent = 'Full Stack • React • Node.js • Python • Web Development';
     }
   }
 

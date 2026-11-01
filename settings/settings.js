@@ -230,8 +230,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pauseOnIdleCheckbox = document.getElementById('pauseOnIdle');
   const jitterEnabledCheckbox = document.getElementById('jitterEnabled');
 
+  const DEFAULT_SKILLS = ['Full Stack Development', 'React', 'Node.js', 'Python', 'Web Development'];
+  const DEFAULT_SEARCH_URL = 'https://www.upwork.com/nx/search/jobs/?q=full%20stack%20react%20python&sort=recency';
+  const DEFAULT_HEADLINE = 'Senior Full Stack Engineer (Python, React & Web Architecture)';
+  const DEFAULT_EXP = '5+ years';
+  const DEFAULT_STRENGTH = 'Fast turnaround, clean architecture & proactive communication';
+
   // Load existing configuration
-  const { settings = {} } = await chrome.storage.local.get('settings');
+  let { settings = {} } = await chrome.storage.local.get('settings');
+
+  // Automatic migration: if stored settings still hold the legacy single 'Python Developer' default, upgrade to full profile
+  const isLegacyPython =
+    (!settings.selectedSkills || settings.selectedSkills.length === 0 || (settings.selectedSkills.length === 1 && (settings.selectedSkills[0] === 'Python Developer' || settings.selectedSkills[0] === 'Python'))) &&
+    (!settings.jobProfile || settings.jobProfile === 'Python Developer' || settings.jobProfile === 'Python');
+
+  if (isLegacyPython) {
+    settings = {
+      ...settings,
+      selectedSkills: [...DEFAULT_SKILLS],
+      jobProfile: DEFAULT_SKILLS.join(', '),
+      searchQuery: 'full stack react python node web development',
+      searchUrl: (!settings.searchUrl || settings.searchUrl.includes('python%20developer') || settings.searchUrl === 'https://www.upwork.com/nx/search/jobs/?q=python%20developer&sort=recency')
+        ? DEFAULT_SEARCH_URL
+        : settings.searchUrl,
+      freelancerHeadline: settings.freelancerHeadline || DEFAULT_HEADLINE,
+      freelancerYearsExp: settings.freelancerYearsExp || DEFAULT_EXP,
+      freelancerKeyStrength: settings.freelancerKeyStrength || DEFAULT_STRENGTH
+    };
+    await chrome.storage.local.set({ settings });
+  }
 
   // Initialize selected skills list
   let selectedSkills = [];
@@ -240,14 +267,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else if (settings.jobProfile && !settings.jobProfile.includes('chrome://')) {
     selectedSkills = settings.jobProfile.split(',').map((s) => s.trim()).filter(Boolean);
   } else {
-    selectedSkills = ['Web Development', 'Python'];
+    selectedSkills = [...DEFAULT_SKILLS];
   }
 
   // Initial render of skills
   renderSelectedTags();
   updatePresetChipsState();
 
-  searchUrlInput.value = settings.searchUrl || generateSearchUrlFromSkills(selectedSkills);
+  searchUrlInput.value = settings.searchUrl || DEFAULT_SEARCH_URL;
   intervalMinutesSelect.value = String(settings.intervalMinutes ?? 3);
   $('minHourly').value = settings.minHourly ?? settings.minBudget ?? '';
   $('minFixed').value = settings.minFixed || '';
@@ -421,9 +448,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       .filter((s) => s.url);
   }
 
-  if (freelancerHeadlineInput) freelancerHeadlineInput.value = settings.freelancerHeadline || '';
-  if (freelancerYearsExpInput) freelancerYearsExpInput.value = settings.freelancerYearsExp || '';
-  if (freelancerKeyStrengthInput) freelancerKeyStrengthInput.value = settings.freelancerKeyStrength || '';
+  if (freelancerHeadlineInput) freelancerHeadlineInput.value = settings.freelancerHeadline || DEFAULT_HEADLINE;
+  if (freelancerYearsExpInput) freelancerYearsExpInput.value = settings.freelancerYearsExp || DEFAULT_EXP;
+  if (freelancerKeyStrengthInput) freelancerKeyStrengthInput.value = settings.freelancerKeyStrength || DEFAULT_STRENGTH;
 
   desktopNotificationsCheckbox.checked = settings.desktopNotifications !== false;
   soundEnabledCheckbox.checked = settings.soundEnabled !== false;
@@ -594,12 +621,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!presetChipsContainer) return;
     presetChipsContainer.querySelectorAll('.preset-chip').forEach((chip) => {
       const skill = chip.dataset.skill;
+      if (!chip.dataset.label) {
+        chip.dataset.label = chip.textContent.replace(/^[+✓]\s*/, '').trim();
+      }
+      const label = chip.dataset.label;
       if (selectedSkills.includes(skill)) {
         chip.classList.add('active');
-        chip.textContent = `✓ ${skill}`;
+        chip.textContent = `✓ ${label}`;
       } else {
         chip.classList.remove('active');
-        chip.textContent = `+ ${skill}`;
+        chip.textContent = `+ ${label}`;
       }
     });
   }
@@ -609,7 +640,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function generateSearchUrlFromSkills(skills) {
-    const query = skills.length > 0 ? skills.join(' ') : 'web development';
+    if (!skills || skills.length === 0) {
+      return DEFAULT_SEARCH_URL;
+    }
+    const cleanTerms = skills.map((s) => s.toLowerCase().replace(/\bdevelopment\b/g, '').trim()).filter(Boolean);
+    const query = cleanTerms.join(' ').replace(/\s+/g, ' ');
     return `https://www.upwork.com/nx/search/jobs/?q=${encodeURIComponent(query)}&sort=recency`;
   }
 
